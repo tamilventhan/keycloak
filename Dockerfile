@@ -1,20 +1,19 @@
-# Use Keycloak 26 base image
+# Use official Keycloak 26 base image
 FROM quay.io/keycloak/keycloak:26.0.0
 
-# Set admin credentials (you can override in Render secrets too)
+# Set Keycloak admin user (override in Render secrets if needed)
 ENV KEYCLOAK_ADMIN=admin
 ENV KEYCLOAK_ADMIN_PASSWORD=admin
 
-# Build the Keycloak server with current configuration
+# Build Keycloak configuration
 RUN /opt/keycloak/bin/kc.sh build
 
-# Expose default HTTP port
+# Expose the port Keycloak will run on (Render listens on this)
 EXPOSE 8080
 
-# Start Keycloak server with required network and proxy settings
+# Start Keycloak with proxy settings for Render compatibility
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", \
   "--hostname-strict=false", \
   "--http-relative-path=/", \
-  "--hostname-url=http://0.0.0.0:8080", \
   "--http-enabled=true", \
   "--proxy=edge"]
