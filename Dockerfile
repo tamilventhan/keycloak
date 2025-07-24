@@ -18,7 +18,6 @@ EXPOSE ${PORT}
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", \
   "--hostname-strict=false", \
   "--http-enabled=true", \
-  "--hostname=0.0.0.0:${PORT}", \
-  "--proxy=edge", \
-  "--proxy-headers=xforwarded", \
+  "--http-port=${PORT}", \
+  "--proxy-headers=forwarded", \
   "--optimized"]
